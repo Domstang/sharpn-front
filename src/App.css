@@ -13,6 +13,10 @@
   }
 }
 
+::selection {
+  background: rgba(253,29,154);
+}
+
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
