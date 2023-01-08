@@ -21,8 +21,7 @@ export default (function Header() {
                     <br />
                     <p className="left-col-subtext mt-3">
                       For a full experience of our URL Shortener, please Sign
-                      In/Up so you can retrieve all your links, stats and more
-                      later.
+                      In/Up so you can retrieve all your links, stats, edit them... and more!
                     </p>
                     <Row className="mt-5">
                       <Col md="auto">

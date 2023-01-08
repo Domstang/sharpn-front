@@ -1,7 +1,11 @@
-import Header from './Header'
+import Header from "./Header";
+import Shortener from "./Shortener";
+
 export default (function Index() {
   return (
-    <Header />
+    <div>
+      <Header />
+      <Shortener />
+    </div>
   );
 });
-
