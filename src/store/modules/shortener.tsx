@@ -1,6 +1,7 @@
 import { baseURL } from '../../apiConfig';
 
 export interface Sharpn {
+  fullCreationDate: Date;
   creationDate: String;
   creationHour: String;
   longUrl: String;
@@ -37,6 +38,7 @@ async function reducer(state = initialState, action: Action): Promise<{ urls: an
         await fetch(baseURL + '/shorten', {
           method: 'POST',
           body: JSON.stringify({
+            fullCreationDate: action.sharpn!.fullCreationDate,
             creationDate: action.sharpn!.creationDate,
             creationHour: action.sharpn!.creationHour,  
             longUrl: action.sharpn!.longUrl,

@@ -47,7 +47,7 @@ const LongUrlInput: React.FC<LongUrlInputProps> = ({ onUrlSubmit }) => {
 
   return (
     <Container>
-      <Row className="justify-content-md-center">
+      <Row>
         <div className="main-input">
           <form onSubmit={handleSubmit}>
             <InputGroup size="lg">
@@ -65,7 +65,7 @@ const LongUrlInput: React.FC<LongUrlInputProps> = ({ onUrlSubmit }) => {
                 Sharpn it!
               </Button>
             </InputGroup>
-            {validator.message("url", url, "required|url")}
+            {/* {validator.message("url", url, "required|url")} */}
           </form>
         </div>
       </Row>

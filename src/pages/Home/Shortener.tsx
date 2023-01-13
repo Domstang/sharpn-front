@@ -4,7 +4,7 @@ import moment from "moment-timezone";
 import "moment-timezone";
 import "./Shortener.css";
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import LongInputUrl from "../../components/LongUrlInput";
 import UserUrlsList from './UserUrlsList';
 import { baseURL } from "../../shortUrlConfig";
@@ -26,6 +26,8 @@ const Shortener: React.FC = () => {
 
   const [ip, setIP] = useState("");
   const [userUrls, setUserUrls] = useState<Sharpn[]>([]);
+  const setUrlsCallback = useCallback(setUserUrls, [setUserUrls]);
+
 
   useEffect(() => {
     getData();
@@ -37,14 +39,10 @@ const Shortener: React.FC = () => {
       const urlsUser = await urls.short;
       const result = urlsUser.urls;
 
-      result.sort((a: any, b: any) =>
-        moment(b.creationDate,"YYYY-MM-DD" && b.creationHour,"HH:mm:ss")
-        .isBefore(moment(a.creationDate, "YYYY-MM-DD" && a.creationHour, "HH:mm:ss"))
-        ? -1
-        : 1
-      );
-
-      setUserUrls(result);
+     // check if global state is updated
+      if (result !== userUrls) {
+        setUserUrls(result);
+      }
     }
     fetchUserUrls();
   }, [urls]);
@@ -65,6 +63,7 @@ const Shortener: React.FC = () => {
   };
 
   const createNewUrl = () => {
+    let fullDate = new Date()
     let dateOfToday = moment().format("YYYY-MM-DD");
     let hour = moment().format("HH:mm:ss");
     const uid: String = generateUniqueId({
@@ -75,6 +74,7 @@ const Shortener: React.FC = () => {
 
     shortUrl = baseURL + "/" + uid;
     const urls: Sharpn = {
+      fullCreationDate: fullDate,
       creationDate: dateOfToday,
       creationHour: hour,
       longUrl: longUrl,
@@ -82,17 +82,18 @@ const Shortener: React.FC = () => {
       shortUrlId: uid,
       userIpAdress: ip,
     };
-    dispatch(sendUrlsToBack(urls));
-    checkIfUserAsUrls(ip);
 
     // Add the new URL to the userUrls state
-    setUserUrls([...userUrls, urls]);
+    setUrlsCallback([...userUrls, urls]);
+
+    dispatch(sendUrlsToBack(urls));
+    checkIfUserAsUrls(ip);
   };
 
   return (
     <div className="main-section">
       <LongInputUrl onUrlSubmit={handleUrlSubmit} />
-      <UserUrlsList userUrls={userUrls} />
+      <UserUrlsList userUrls={userUrls} onUrlSubmit={handleUrlSubmit} setUserUrls={setUrlsCallback} />
     </div>
   );
 };
